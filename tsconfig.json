@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "useDefineForClassFields": true,
+        "moduleResolution": "Node",
+        "strict": true,
+        "jsx": "preserve",
+        "baseUrl": ".",
+        "sourceMap": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "lib": ["Es6", "ESNext", "DOM"],
+        "types": ["vite/client"],
+        "paths": {
+            "@/*": ["src/*"],
+            "/#/*": ["types/*"]
+        },
+        "noImplicitAny": true,     // 不允许使用any
+//        "strictNullChecks": false, // 不允许使用null
+        "noImplicitThis": true     // 不允许往this上面挂属性
+    },
+    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "types/**/*"],
+    "exclude": ["node_modules", "dist", "**/*.js"]
+}

@@ -1,0 +1,5 @@
+export * from '@/hooks/useTheme.hook'
+export * from '@/hooks/useCode.hook'
+export * from '@/hooks/useSystemInit.hook'
+export * from '@/hooks/useLifeHandler.hook'
+export * from '@/hooks/useLang.hook'

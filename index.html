@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>正成科技</title>
+    <link rel="stylesheet" href="./index.css"/>
+</head>
+<script>
+    window.SITE_CONFIG = {
+        apiURL: 'http://192.168.110.32:8080',
+        zhcURL :'http://192.168.110.32:8001',
+    }
+</script>
+<body>
+<div id="appProvider" style="display: none;"></div>
+<div id="app">
+    <div class="first-loading-wrp">
+        <div class="loading-wrp">
+            <span class="dot dot-spin"><i></i><i></i><i></i><i></i></span>
+        </div>
+    </div>
+</div>
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>
