@@ -16,7 +16,7 @@ export const useSystemStore = defineStore({
     state: (): SystemStoreType => storageSystem || {
         userInfo: {
             id: undefined,
-            name: undefined,
+            username: undefined,
             realName: undefined,
             superAdmin: undefined,
             deptName: undefined,

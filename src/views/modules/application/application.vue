@@ -33,6 +33,7 @@ import { FetchInfoEnum, SystemStoreEnum } from '@/store/modules/systemStore/syst
 import { http } from "@/api/http";
 import { RequestHttpEnum } from "@/enums/httpEnum";
 import { useSystemStore } from "@/store/modules/systemStore/systemStore";
+import { MD5 } from "crypto-js";
 
 const filterText =  ref<any>('')
 const menuList = ref<any>([])
@@ -67,10 +68,16 @@ const goZHC = (item:any) => {
         }
     } else if(item.type == 1){
         try {
-            const params = JSON.parse(item.params)
-            params.accountName = systemStore.getUserInfo.name
+            let params = JSON.parse("{}")
+            if(item.params){
+               params = JSON.parse(item.params)
+            }
+            params.accountName = systemStore.getUserInfo.username
             params.email = systemStore.getUserInfo.email
-            http(RequestHttpEnum.POST)(item.url,params).then(({ data: res }) => {
+            let timestamp = Date.now();
+            let secret = item.secret;
+            let signature = MD5(timestamp+","+secret+","+params).toString()
+            http(RequestHttpEnum.POST)(item.url,params,{'Timestamp':timestamp,'signature':signature}).then(res => {
                 if (res.code != 0) {
                     return window['$notification'].error({
                         content: res.message,
@@ -79,7 +86,8 @@ const goZHC = (item:any) => {
                         keepAliveOnHover: true
                     })
                 }
-                openNewWindow(res.redirectUrl+'?token=' + res.token+'&sessionId=' + res.sessionId+'&userName=' + systemStore.getUserInfo.name)
+              // @ts-ignore
+              openNewWindow(res.redirectUrl+'?token=' + res.token+'&sessionId=' + res.sessionId+'&userName=' + systemStore.getUserInfo.username)
             })
         } catch (error) {
             console.log(error)
@@ -97,6 +105,34 @@ const goZHC = (item:any) => {
             }
             openNewWindow(res.data);
         })
+    }else if(item.type == 3){
+      try {
+        let params = JSON.parse("{}")
+        if(item.params){
+          params = JSON.parse(item.params)
+        }
+        let userName = systemStore.getUserInfo.username
+        var strSysDatetime = Math.floor(Date.now() / 1000);
+
+
+        // 公钥
+        let publicKey = item.publicKey;
+        if(item.publicKey){
+          publicKey = item.publicKey;
+        }else{
+          publicKey = "HJEHR";
+        }
+        let signature = MD5(params.userName+publicKey+params.strSysDatetime).toString()
+        openNewWindow(item.url+'?verify=' + signature+'&userName=' + userName +'&strSysDatetime=' + strSysDatetime)
+      } catch (error) {
+        console.log(error)
+        window['$notification'].error({
+          content: '请重新配置携带参数',
+          meta: '错误',
+          duration: 2500,
+          keepAliveOnHover: true
+        })
+      }
     } else {
         window['$notification'].error({
             content: '请联系管理员配置类型',
